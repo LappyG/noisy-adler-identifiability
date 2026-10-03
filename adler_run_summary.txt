@@ -1,0 +1,31 @@
+Grid: 81 D × 61 K; 512 phase points
+T = 720 h, dt = 0.1 h, sigma = 0.06 rad/sqrt(h)
+Monte Carlo (25 × 25, 12 paths/point): median FIM error 0.8%, 95th percentile 3.0%; median smallest-eigenvalue error 2.0%.
+Condition number: median 93.4 in the well-locked interior; median 3.1 outside.
+At K = 0.080 rad/h, the worst sampled conditioning is 215.6 at D = 0.068 rad/h, just inside the +tongue edge. At the edge (D = 0.080), it falls to 15.8.
+sigma=0.04: peak condition 660.7 at D=0.072 rad/h (K=0.080).
+sigma=0.06: peak condition 215.6 at D=0.068 rad/h (K=0.080).
+sigma=0.08: peak condition 98.5 at D=0.064 rad/h (K=0.080).
+sigma=0.10: peak condition 53.8 at D=0.060 rad/h (K=0.080).
+Duration scaling: lambda_min is proportional to T; condition is unchanged.
+Grid convergence (512 vs 1024 phase points): max relative lambda_min error 4.53e-12; max density L1 error 1.56e-12.
+Edge-case bootstrap: analytic lambda_min lies in the 95% path interval at 4/4 selected detunings.
+  D=0.000: analytic 4449.1, MC 4473.9, 95% CI [4368.8, 4578.1]
+  D=0.067: analytic 1509.0, MC 1467.5, 95% CI [1343.0, 1625.7]
+  D=0.080: analytic 21158.9, MC 20642.5, 95% CI [19485.0, 21652.0]
+  D=0.120: analytic 69788.0, MC 69432.4, 95% CI [68998.1, 69865.4]
+Interpretation: locking concentrates sin(psi), making the FIM poorly conditioned relative to its strongest direction. The phase bottleneck can make identifiability worst just inside the edge; noise rounds the transition, and phase slips restore information across and beyond the boundary.
+Saved adler_fisher.png, adler_fisher.pdf, adler_sensitivity.png, adler_sensitivity.pdf, adler_mc_validation.png, adler_mc_validation.pdf, adler_figure_captions.txt
+Fitting independent trajectories on a 19 x 9 recovery grid...
+Fitting 7-, 30-, and 90-day records and circular-error stress cases...
+
+PARAMETER RECOVERY (30-day records; 95% nominal marginal K intervals)
+  D=0.0000: K bias=0.005543, RMSE=0.01641, coverage known/estimated sigma=94.8%/94.9%
+  D=0.0667: K bias=0.01032, RMSE=0.02516, coverage known/estimated sigma=93.8%/94.1%
+  D=0.0800: K bias=0.001842, RMSE=0.01197, coverage known/estimated sigma=94.3%/94.2%
+  D=0.1200: K bias=0.0001407, RMSE=0.00342, coverage known/estimated sigma=95.4%/95.2%
+Unresolved winding increments across all recovery scenarios: 0
+  Observation SD=0.03 rad, near edge, naive: K bias=0.4518, K RMSE=0.4728
+  Observation SD=0.03 rad, near edge, corrected: K bias=0.01093, K RMSE=0.02686
+Saved adler_recovery.png, adler_recovery.pdf, adler_likelihoods.png, adler_likelihoods.pdf, adler_observation_error.png, adler_observation_error.pdf
+Saved recovery report, CSV metrics, NPZ estimates, and metadata.
