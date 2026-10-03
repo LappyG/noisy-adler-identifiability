@@ -26,10 +26,10 @@ $$
 
 Here $K\geq0$ is coupling strength, and $\sigma$ controls random phase fluctuations. The $-K\sin\psi$ term tries to pull the phases toward a stable gap.
 
-**3. Find the locking region.** Without noise, a locked clock holds a constant gap $\psi_*$. Setting the rate of change to zero gives
+**3. Find the locking region.** Without noise, a locked clock holds a constant gap $\psi_{*}$. Setting the rate of change to zero gives
 
 $$
-0=D-K\sin\psi_*, \qquad \sin\psi_* = \frac{D}{K}.
+0=D-K\sin\psi_{*}, \qquad \sin\psi_{*} = \frac{D}{K}.
 $$
 
 For $K>0$, a fixed gap exists when $|D|\leq K$. Draw that condition over detuning and coupling and it forms the **Arnold tongue**. Inside it, one branch of the fixed gap is stable. Outside it, the gap keeps drifting around the circle. Noise blurs the boundary and can cause occasional phase slips even inside it.
