@@ -83,6 +83,35 @@ python script.py
 
 The script uses fixed random seeds and writes its results beside `script.py`. A run replaces files with the same output names. The settings are constants near the top of the script.
 
+## Fit your own phase record
+
+Put directly measured phase observations in a CSV with a header and two columns:
+
+```csv
+time_h,phase_rad
+0,0.20
+0.1,0.21
+0.2,0.19
+0.3,0.23
+```
+
+These rows illustrate the format; use a much longer record for meaningful intervals. `time_h` is elapsed time in hours from the experiment's chosen origin; values must increase, but the spacing may be irregular. `phase_rad` is an angle in radians. By default it is the **phase gap** $\psi=z-\phi$ (cue phase minus clock phase), recorded modulo $2\pi$. Fit it with:
+
+```bash
+python fit_phase_csv.py record.csv --output fit.json
+```
+
+For a record of the **clock phase** $\phi$ instead, add `--phase-kind clock`. The fitter constructs the cue phase as $z(t)=z(0)+2\pi t/P$ and then uses $\psi=z-\phi$. `P` defaults to 24 hours and $z(0)$ to 0 radians; set them to match your experiment's time origin:
+
+```bash
+python fit_phase_csv.py clock.csv --phase-kind clock \
+  --cue-period-h 24 --cue-phase-at-zero-rad 0 --output fit.json
+```
+
+If `phase_rad` preserves accumulated turns instead of wrapping each angle modulo $2\pi$, pass `--phase-format unwrapped`. By default the fitter estimates the process-noise level $\sigma$ from the record. If it is independently known, pass `--known-sigma` in rad/$\sqrt{\mathrm{h}}$ (for example, `--known-sigma 0.06`). The fit reports detuning $D$ and coupling $K$ in rad/h; the clock's natural angular speed is $\omega=2\pi/P-D$.
+
+The fit uses Gaussian Euler phase increments and assumes that phase itself has already been extracted from the measurements. The 95% intervals are asymptotic and conditional on that model. It does not extract phase from a raw signal or model independent measurement error in those phase values. Wrapped observations can hide turns between samples, so the inferred increments are ambiguous when the gap moves by about $\pi$ radians or more between observations. Even unwrapped observations can give biased Euler fits when sampled too sparsely. By default the fitter rejects gaps over 1 hour or a fitted $\max(|D|,|K|)\,\max(\Delta t)$ over 0.2; these are conservative heuristics, not guarantees of accuracy. `--allow-coarse` overrides them and adds a warning to the result. Check the approximation at your actual sampling cadence, especially near phase slips.
+
 ## What the script does
 
 1. Computes the stationary circular density with its nonzero probability current on a 512-point phase grid.
@@ -113,7 +142,7 @@ Poor Fisher-matrix conditioning should not be read as zero absolute information.
 
 ## Scope
 
-These are simulation results for directly observed phase under a Gaussian Euler transition model. The analytic Fisher calculation assumes a stationary start and conditions on the initial phase. The measurement-error correction assumes a known error level and resolved phase increments. The project does not include experimental circadian data or validate phase extraction from a measured signal.
+The simulation results use directly observed phase under a Gaussian Euler transition model. The analytic Fisher calculation assumes a stationary start and conditions on the initial phase. The measurement-error correction assumes a known error level and resolved phase increments. The CSV fitter accepts phase records but does not include experimental circadian data or validate phase extraction from a measured signal.
 
 ## Why I like this work
 
